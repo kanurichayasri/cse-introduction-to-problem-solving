@@ -1,3 +1,6 @@
+ou are developing a digital billing tool for an APMC Mandi to help streamline transactions between farmers and traders. Create a Python program that inputs the farmer's and trader's names, then continuously accepts crop details (name, weight, and rate per kg) until all items are recorded. The system must automatically calculate the total sales amount, deduct a 2% market fee, and determine the final net payable amount. Finally, the program should generate a formatted receipt with the current date and time, and save this record to a file , ensuring UTF-8 encoding is used to support special characters or regional names
+
+
 # cse-introduction-to-problem-solving
 APMC Mandi Billing SystemA Python-based command-line application designed to digitize the billing process in Agricultural Produce Market Committees (APMC).
 This tool automates the generation of sales receipts for farmers, calculating totals, taxes, and net payable amounts while ensuring accurate record-keeping.
