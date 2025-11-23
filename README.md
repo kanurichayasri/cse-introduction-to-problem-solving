@@ -11,6 +11,6 @@ Saves a permanent record to a text file.
 Features
 Dynamic Cart System: Add an unlimited number of crops (Wheat, Potato, etc.) to a single bill.
 Automated Tax Calculation: Automatically deducts the standard 2% market fee from the total.
-Unicode Support: Fully supports special characters and emojis (e.g., "Ramesh 🌾") using UTF-8 encoding.
+Unicode Support: Fully supports special characters and emojis (e.g., "Ramesh ") using UTF-8 encoding.
 Input Validation: Prevents errors by validating weights and prices (must be positive numbers).
 File Persistence: Automatically saves every generated bill to farmer_bill.txt for record-keeping.
