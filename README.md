@@ -121,6 +121,9 @@ def generate_agri_bill():
 if __name__ == "__main__":
     generate_agri_bill()
 
+    <img width="499" height="672" alt="image" src="https://github.com/user-attachments/assets/1f91dd3b-d575-495e-8d8e-ae9569454e67" />
+
+
 
 
 
