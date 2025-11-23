@@ -1,4 +1,127 @@
 ou are developing a digital billing tool for an APMC Mandi to help streamline transactions between farmers and traders. Create a Python program that inputs the farmer's and trader's names, then continuously accepts crop details (name, weight, and rate per kg) until all items are recorded. The system must automatically calculate the total sales amount, deduct a 2% market fee, and determine the final net payable amount. Finally, the program should generate a formatted receipt with the current date and time, and save this record to a file , ensuring UTF-8 encoding is used to support special characters or regional names
+code
+
+# project 1 about: agriculture and commerce
+import datetime  # Used to print the current date on the bill
+
+
+def generate_agri_bill():
+    """
+    Generates a formatted bill for farmer sales in an APMC mandi.
+    Handles multiple crops, calculates totals/taxes, prints to console, and saves to file.
+    """
+    print("==========================================")
+    print("   APMC MANDI: FARMER BILLING SYSTEM      ")
+    print("==========================================")
+    
+    # 1. INPUT: Commerce Details
+    farmer_name = input("Enter Farmer Name: ").strip()
+    trader_name = input("Enter Trader/Buyer Name: ").strip()
+    
+    # Quick check for Unicode (optional warning)
+    if any(ord(c) > 127 for c in (farmer_name + trader_name)):
+        print("-> Note: Unicode characters detected (e.g., emojis). File will use UTF-8 to handle them.")
+    
+    # List to store the items sold
+    cart = []  # Empty list for appending crop details
+    total_amount = 0.0
+    
+    # 2. LOOP: Add multiple crops
+    while True:
+        print("\n--- Add Crop Details ---")
+        crop = input("Crop Name (e.g., Wheat, Potato): ").strip()
+        if not crop:
+            print("-> Error: Crop name cannot be empty. Please try again.")
+            continue
+        
+        # Quick check for Unicode in crop (optional)
+        if any(ord(c) > 127 for c in crop):
+            print("-> Note: Unicode in crop name. File will use UTF-8.")
+        
+        # Inner loop for valid weight/rate input
+        weight = None
+        rate = None
+        while True:
+            try:
+                weight_input = input(f"Weight of {crop} (in kg, >0): ")
+                weight = float(weight_input)
+                if weight <= 0:
+                    print("-> Error: Weight must be greater than 0. Please try again.")
+                    continue
+                break  # Valid weight, exit inner loop
+            except ValueError:
+                print("-> Error: Please enter a valid number for weight.")
+        
+        while True:
+            try:
+                rate_input = input(f"Price per kg for {crop} (₹): ")
+                rate = float(rate_input)
+                if rate < 0:
+                    print("-> Warning: Negative price? Proceeding, but check input.")
+                break  # Valid rate, exit inner loop
+            except ValueError:
+                print("-> Error: Please enter a valid number for price.")
+        
+        cost = weight * rate
+        total_amount += cost
+        
+        # Add this transaction to our list (Commerce Logic)
+        # Right-aligned amount for better currency display
+        cart.append(f"{crop:<15} | {weight:<8} kg | ₹{cost:8.2f}")
+        
+        # Ask to continue
+        more = input("Add another crop? (yes/no): ").lower().strip()
+        if more in ['no', 'n']:
+            break
+    
+    # Check for empty cart (edge case)
+    if not cart:
+        print("-> No crops added. Exiting without bill.")
+        return
+    
+    market_fee = total_amount * 0.02
+    final_payable = total_amount - market_fee  # Deduction from farmer's payment
+    
+    # 4. OUTPUT & FILE SAVING
+    # Matched header alignment to item lines
+    bill_content = (
+        "--- BILL RECEIPT ---\n"
+        f"Date: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n"
+        f"Farmer: {farmer_name}\n"
+        f"Buyer:  {trader_name}\n"
+        f"------------------------------------------\n"
+        f"{'Item':<15} | {'Weight':<8} kg | {'Amount':<8}\n"
+        f"------------------------------------------\n"
+    )
+    
+    # Loop through the list to add items to the bill string
+    for item in cart:
+        bill_content += item + "\n"
+        
+    bill_content += (
+        f"------------------------------------------\n"
+        f"{'Sub Total:':<20} ₹{total_amount:8.2f}\n"
+        f"{'Mandi Tax (2%):':<20} -₹{market_fee:8.2f}\n"
+        f"==========================================\n"
+        f"{'NET PAYABLE:':<20} ₹{final_payable:8.2f}\n"
+        f"==========================================\n"
+    )
+    
+    # Print to Screen (Console)
+    print(bill_content)
+    
+    # Save to File (Persistence) - FIXED: Added encoding='utf-8' to handle Unicode
+    try:
+        with open("farmer_bill.txt", "w", encoding='utf-8') as file:  # Key fix here!
+            file.write(bill_content)
+        print(f"-> Success: Bill saved to 'farmer_bill.txt' (UTF-8 encoded)")
+    except IOError as e:
+        print(f"-> Error: Could not save file. Details: {e}. Check permissions.")
+
+if __name__ == "__main__":
+    generate_agri_bill()
+
+
 
 
 # cse-introduction-to-problem-solving
